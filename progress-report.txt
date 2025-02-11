@@ -54,5 +54,13 @@ xxx 06/02/2025 xxx
 - Ran the image into a container $ docker run -d --name <container-name> -p <desired-port:8080> <image-name>
 - Checked the browser for the app using <pub-ip-addr>:<desired-port>  successful
 
+xxx 09/02/2025 xxx
+- Encountered unstable build with Jenkins
+- Changed the IP-Addr of Staging/QA Server in Manage Jenkins > System > ssh server
+- Build still unsatble, deleted existing webapp.war, images, containers from Staging/QA server
+- Build became stable, [## Jenkins is unable to build over name space]
+- Installed Ansible, python3 and docker
+- Created ansible playbook to deploy dockerfile, webapp.war etc
 
+xxx 10/02/2025 xxx
 
