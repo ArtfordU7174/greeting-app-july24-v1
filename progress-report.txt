@@ -62,5 +62,27 @@ xxx 09/02/2025 xxx
 - Installed Ansible, python3 and docker
 - Created ansible playbook to deploy dockerfile, webapp.war etc
 
-xxx 10/02/2025 xxx
+xxx 12/02/2025 xxx
+- Launched two production servers (Debian and Amazon Linux)
+- Installed java-17 and docker on the production servers
+- Created environment variable for java in each server
+- Added username of each server to docker group [## you must reload the server]
+- Established ssh connection from Staging/QA server to production servers
 
+xxx 13/02/2025 xxx
+- Created ansible host file for the two production servers, ansible-host
+  $ vi ansible-host
+	[production_servers]
+	production-server1_pub-ip-address anisble_host=${USER} path-to-ansible_python_interpreter 
+	production-server2_pub-ip-address anisble_host=${USER} path-to-ansible_python_interpreter
+   :wq!
+- Ran a ping commmand; $ ansible all -m ping -i ansible-host  
+- Tested connection with the; $ ansible-playbook -i <hosts-file> <name-of-yaml-file>
+[Ensure the webapp.war, dockerfile, hostfile and playbook are in the home directory of staging/qa server]
+
+xxx 15/02/2025 xxx
+- Updated the ip-addr of the staging/qa server and jenkins
+- Deleted the exec commands in project-configure section Dashboard > project > configure >
+- Replaced deleted command with; ansible-playbook -i <hosts-file> <name-of-ansible-playbook> 
+- Apply & Save
+- Ran build in jenkins project GUI
