@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Mobann DevOps Greeting App</h1>
+        <h1>Welcome to Vmtechnologies Greeting App</h1>
         <h2> If you see this, you have successfully released a simple greeting App. Congratulations </h2>
         <label for="name">Enter your name:</label>
         <input type="text" id="name" placeholder="Your Name">
