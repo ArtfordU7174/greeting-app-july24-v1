@@ -86,3 +86,24 @@ xxx 15/02/2025 xxx
 - Replaced deleted command with; ansible-playbook -i <hosts-file> <name-of-ansible-playbook> 
 - Apply & Save
 - Ran build in jenkins project GUI
+
+xxxxxxx 05/03/2025 xxxxx
+- updated ip-addr for Jenkins ssh-server [vmtech-ssh-stagingnqa-serever]
+- updated ansible-inventory file [ansible-host] with production servers ip-addr
+- Re-established ssh from staging/qa server to production servers
+- ran $ ansible all -m ping -i ansible-host
+- ran $ ansible-playbook -i ansible-host ansible-pb.yaml
+- checked browser using production-servers ip-addr:8080/webapp
+- Updated webhook link in GitHub; settings > webhooks > edit, paste; http://<ip-addr:8080/github-webhook/>
+- Made some changes in the index.jsp file
+- Push the changes to GitHub
+- Noticed a new build number
+
+xxxxxx 05/03/2025 xxxxx
+- Converted the .war file to running container in staging/qa server
+- $ docker build -t artford-img .
+- $ docker run -d --name artford-con -p 8080:8080 artford-img
+- $ docker commit artford-con <dockerhub-repo-name:tag>   (## tag = ddmmyyyy-hhmm)
+- $ docker push <dockerhub-repo-name:tag>
+
+
