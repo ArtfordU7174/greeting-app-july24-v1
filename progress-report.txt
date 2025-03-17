@@ -106,4 +106,40 @@ xxxxxx 05/03/2025 xxxxx
 - $ docker commit artford-con <dockerhub-repo-name:tag>   (## tag = ddmmyyyy-hhmm)
 - $ docker push <dockerhub-repo-name:tag>
 
+xxxxx 14/03/2025 xxxx
+- Launched Sonaqube/Jfrog Server
+- Amazon Linux-2, t3.medium, 20Bb
+- Password the server => $ sudo vi /etc/ssh/sshd_config
+- Restarted ssh daemon => $ sudo systemctl restart sshd
+- Installed java => $ amazon-linux-extras; **
+- Created env. variable in .bash_profile
+- Installed postgres [check your note for details]
+- Installed sonarqube [check your note for details]
+- Started sonarqube  $ ./sonar.sh start
+- Checked sonarqube status $ ./sonar.sh status
 
+xxxxx 15/03/2025 xxxx
+- Downloaded Jfrog artifactory; ec2-user@ip-addr opt] 
+$ sudo wget <jfrog-url-download-link>
+- Extracted JFrog artifactory; ec2-user@ip-addr opt]
+$ sudo tar -xvf <jfrog-url-download-link>
+- Changed JFrog directory ownership; ec2-user@ip-addr opt]
+$ sudo chown -R ec2-user:ec2-user <jfrog dir>
+- cd > app > bin
+- Started JFrog and checked status;
+ec2-user@ip-addr bin] ./artifactory.sh start
+ec2-user@ip-addr bin] ./artifactory.sh status
+- Set-up settings.xml, get the snippet from jfrog, edit it to
+include 8082, username and password
+- Navigate to pom.xml file, edit it to include distributionManagement
+- Ran deploy command 
+
+xxxxx 17/03/2025 xxxx
+ubuntu@<ip-addr>:~/<project-name>/<remote-repo-name>$ mvn -U deploy
+- Navigated to the .war file in jfrog application > artifacts 
+> repo-name-release-local > copy the url
+- Ran .war url on staging/qa server
+ubuntu@<ip-addr>:~$ wget --user admin --password Computer1! <.war url>
+- Next is the process of release
+- Change the name to webapp.war
+ubuntu@<ip-addr>:~$ mv <.war> webapp.war

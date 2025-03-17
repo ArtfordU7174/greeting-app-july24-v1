@@ -1,0 +1,6 @@
+projectKey=art-greeting-app02
+serverUrl=http://44.223.17.139:9000
+serverVersion=9.4.0.54424
+dashboardUrl=http://44.223.17.139:9000/dashboard?id=art-greeting-app02
+ceTaskId=AZWYQcvliOPK96EAEGYo
+ceTaskUrl=http://44.223.17.139:9000/api/ce/task?id=AZWYQcvliOPK96EAEGYo
