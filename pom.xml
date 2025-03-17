@@ -8,11 +8,11 @@
         <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.mezikko</groupId>
-    <artifactId>mezikko</artifactId>
+    <groupId>com.vmtech</groupId>
+    <artifactId>vmtech</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
-    <name>mezikkoapp</name>
+    <name>vmtechapp</name>
     <description>Class DevOps project at mobannapp</description>
 
     <properties>
@@ -173,10 +173,9 @@
      <repository>
         <id>central</id>
         <name>ip-10-0-2-57.ec2.internal-releases</name>
-        <url>http://44.223.17.139:8082/artifactory/greetingapps-libs-release-local</url>
+        <url>http://52.21.102.210:8081/artifactory/vmtech-greeting-app-libs-release-local</url>
      </repository>
     </distributionManagement>
-
 </project>
 
 
