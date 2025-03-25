@@ -51,7 +51,7 @@ pipeline {
                     id: "MAVEN_RESOLVER",
                     serverId: "jfrog", // credential ID from Jenkins global credentials
                     releaseRepo: "vmtechgreetingapp-libs-release-local",
-                    snapshotRepo: "jvmtechgreetingapp-libs-snapshot-local"
+                    snapshotRepo: "vmtechgreetingapp-libs-snapshot-local"
                 )
             }
     }
