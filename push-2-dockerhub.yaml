@@ -1,0 +1,57 @@
+#Create Custom Container Image, and Push it to DockerHub Registry
+---
+- hosts: localhost
+  tasks: 
+  - name: Pull .war artifact from Artifactory
+    become: true
+    get_url:
+      url: http://52.21.102.210:8082/artifactory/vmtechgreetingapp-libs-release-local/com/vmtech/vmtech/1.0/vmtech-1.0.war
+      dest: /home/ubuntu
+      url_username: admin
+      url_password: Vmtech7174
+
+  - name: Rename .war Artifact
+    command: mv -f vmtech-1.0.war webapp.war
+  
+  - name: make sure python docker library is there for the docker_image module execution
+    ansible.builtin.pip:
+      name: docker
+      
+  - name: install docker engine
+    apt:
+      pkg:
+      - docker
+      - docker.io
+    become: yes
+
+  - name: Pull Tomcat Container Image
+    docker_image:
+      name: !unsafe tomcat:latest
+      source: pull
+      force_tag: yes
+
+  - name: Build image and with build args
+    docker_image:
+      name: artford7174/vmtechnologies-devops-1
+      repository: artford7174/vmtechnologies-devops-1:{{build_number}}
+      build:
+        path: /home/ubuntu
+        args:
+          listen_port: 8080
+      source: build
+      force_source: yes
+  
+  
+  - name: Log into DockerHub
+    docker_login:
+     username: artford7174
+     password: Dave7174&
+ 
+
+  - name: Push to docker hub
+    docker_image:
+        name: artford7174/vmtechnologies-devops-1
+        repository: artford7174/vmtechnologies-devops-1:{{build_number}}
+        force_tag: yes
+        push: yes
+        source: local
