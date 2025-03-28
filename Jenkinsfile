@@ -65,7 +65,7 @@ pipeline {
             }
         }
 
-        /*
+        
         stage ('Deploy Artifacts') {
             steps {
                 rtMavenRun(
@@ -77,11 +77,13 @@ pipeline {
                 )
             }
         }
-        */
+        
 
         stage ('Publish Build Info') {
             steps {
-                rtPublishBuildInfo(serverId: "jfrog")
+                rtPublishBuildInfo(
+                    serverId: "jfrog"
+                )
             }
         }
 
