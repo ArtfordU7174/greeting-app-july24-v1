@@ -23,7 +23,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-                dir('webapp') {
+                dir('target') {
                     sh "pwd"
                     sh "ls -lah"
                     sh "mvn package"
@@ -34,7 +34,7 @@ pipeline {
         stage ('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar') {
-                    dir('webapp') {
+                    dir('target') {
                         sh 'mvn -U clean install sonar:sonar'
                     }
                 }
