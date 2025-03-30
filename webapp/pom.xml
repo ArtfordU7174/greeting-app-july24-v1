@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+g?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -119,10 +119,10 @@
 
     <distributionManagement>
         <repository>
-            <id>central</id>
-            <name>vmtechgreetingapp-libs-release-local</name>
-            <url>http://52.21.102.210:8082/artifactory/vmtechgreetingapp-libs-release-local</url>
+        <id>artifactory-central</id>
+        <name>vmtechgreetingapp-libs-release-local</name>
+        <url>http://52.21.102.210:8082/artifactory/vmtechgreetingapp-libs-release-local</url>
         </repository>
     </distributionManagement>
-</project>
 
+</project>

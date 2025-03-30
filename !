@@ -118,11 +118,12 @@ g?xml version="1.0" encoding="UTF-8"?>
     </dependencies>
 
     <distributionManagement>
-        <repository>
-        <id>artifactory-central</id>
-        <name>vmtechgreetingapp-libs-release-local</name>
-        <url>http://52.21.102.210:8082/artifactory/vmtechgreetingapp-libs-release-local</url>
-        </repository>
+	    <repository>
+            <id>artifactory-central</id>
+            <name>vmtechgreetingapp-libs-release-local</name>
+            <url>http://52.21.102.210:8082/artifactory/vmtechgreetingapp-libs-release-local</url>
+            </repository>
     </distributionManagement>
 
 </project>
+
