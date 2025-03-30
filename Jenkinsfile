@@ -23,7 +23,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-                dir('target') {
+                dir('webapp') {
                     sh "pwd"
                     sh "ls -lah"
                     sh "mvn package"
@@ -34,7 +34,7 @@ pipeline {
         stage ('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar') {
-                    dir('target') {
+                    dir('webapp') {
                         sh 'mvn -U clean install sonar:sonar'
                     }
                 }
@@ -78,7 +78,7 @@ pipeline {
             }
         }
         
-
+        /*
         stage ('Publish Build Info') {
             steps {
                 rtPublishBuildInfo(
@@ -86,7 +86,7 @@ pipeline {
                 )
             }
         }
-
+        */ 
         stage('Copy Files & Build Image in Parallel') {
             parallel {
                 stage('Copy Dockerfile & Playbook to Staging Server') {
