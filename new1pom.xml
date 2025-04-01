@@ -22,7 +22,6 @@
         <java.version>1.8</java.version>
     </properties>
 
-    <!-- Repository Configuration -->
     <repositories>
         <repository>
             <id>maven-central</id>
@@ -38,6 +37,7 @@
                 <version>3.3.2</version>
                 <configuration>
                     <webXml>/home/ubuntu/project/greeting-app-july24-v1/webapp/src/main/webapp/WEB-INF/web.xml</webXml>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
 
@@ -74,7 +74,6 @@
         </plugins>
     </build>
 
-    <!-- Dependencies -->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -125,3 +124,4 @@
     </distributionManagement>
 
 </project>
+
