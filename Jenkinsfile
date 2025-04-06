@@ -2,25 +2,27 @@ pipeline {
     agent any
 
     environment {
-        JFROG_SERVER = credentials('jfrog')   // Store in Jenkins credentials
-        SSH_KEY = credentials('ssh_agent')    // Store SSH key securely
-        GIT_CREDENTIALS = 'git'
+        JFROG_SERVER = credentials('jfrog')  // JFrog Artifactory credentials
+        SSH_KEY = credentials('ssh_agent')   // SSH key for secure access to servers
+        GIT_CREDENTIALS = 'git'  // GitHub credentials
         REPO_URL = 'https://github.com/ArtfordU7174/greeting-app-july24-v1.git'
-        STAGING_SERVER = '3.229.181.63'
-        K8S_MASTER = '107.21.221.56'
+        STAGING_SERVER = '3.229.181.63'  // Staging server IP
+        K8S_MASTER = '107.21.221.56'  // Kubernetes Master IP
     }
 
     tools {
-        maven 'Maven'
+        maven 'Maven'  // Specify Maven tool for building the project
     }
 
     stages {
+        // Checkout the source code from GitHub
         stage ('Checkout SCM') {
             steps {
                 git branch: 'master', credentialsId: GIT_CREDENTIALS, url: REPO_URL
             }
         }
 
+        // Build the project using Maven
         stage ('Build') {
             steps {
                 dir('webapp') {
@@ -31,6 +33,7 @@ pipeline {
             }
         }
 
+        // Perform SonarQube analysis on the code
         stage ('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar') {
@@ -41,31 +44,32 @@ pipeline {
             }
         }
 
+        // Set up the Artifactory configuration for Maven
         stage ('Artifactory Configuration') {
             steps {
                 rtServer(
                     id: "jfrog",
-                    url: "http://52.21.102.210:8082/artifactory",
+                    url: "http://52.21.102.210:8082/artifactory",  // Replace with an environment variable for flexibility
                     credentialsId: JFROG_SERVER
                 )
 
                 rtMavenDeployer(
                     id: "MAVEN_DEPLOYER",
                     serverId: "jfrog",
-                    releaseRepo: "vmtechgreetingapp-libs-release-local",
-                    snapshotRepo: "vmtechgreetingapp-libs-snapshot-local"
+                    releaseRepo: "dannart-libs-release-local",
+                    snapshotRepo: "dannart-libs-snapshot-local"
                 )
 
                 rtMavenResolver(
                     id: "MAVEN_RESOLVER",
                     serverId: "jfrog",
-                    releaseRepo: "vmtechgreetingapp-libs-release-local",
-                    snapshotRepo: "vmtechgreetingapp-libs-snapshot-local"
+                    releaseRepo: "dannart-libs-release-local",
+                    snapshotRepo: "dannart-libs-snapshot-local"
                 )
             }
         }
 
-        
+        // Deploy artifacts to Artifactory
         stage ('Deploy Artifacts') {
             steps {
                 rtMavenRun(
@@ -77,16 +81,8 @@ pipeline {
                 )
             }
         }
-        
-        /*
-        stage ('Publish Build Info') {
-            steps {
-                rtPublishBuildInfo(
-                    serverId: "jfrog"
-                )
-            }
-        }
-        */ 
+
+        // Copy Dockerfile and playbook to the staging server and build container image
         stage('Copy Files & Build Image in Parallel') {
             parallel {
                 stage('Copy Dockerfile & Playbook to Staging Server') {
@@ -100,13 +96,14 @@ pipeline {
                 stage('Build Container Image') {
                     steps {
                         sshagent(['ssh_agent']) {
-                            sh "ssh -o StrictHostKeyChecking=no ubuntu@18.175.216.77 -C \"ansible-playbook -vvv -e build_number=${BUILD_NUMBER} push-2-dockerhub.yaml\""
+                            sh "ssh -o StrictHostKeyChecking=no ubuntu@${STAGING_SERVER} -C \"ansible-playbook -vvv -e build_number=${BUILD_NUMBER} push-2-dockerhub.yaml\""
                         }
                     }
                 }
             }
         }
 
+        // Copy Kubernetes deployment service definition to the K8s master
         stage('Copy Deployment & Service Definition to K8s Master') {
             steps {
                 sshagent(['ssh_agent']) {
@@ -115,16 +112,18 @@ pipeline {
             }
         }
 
+        // Await approval before proceeding to production deployment
         stage('Waiting for Approvals') {
             steps {
                 input('Test Completed? Provide approval for production release.')
             }
         }
 
+        // Deploy the service to production on Kubernetes
         stage('Deploy to Production') {
             steps {
                 sshagent(['ssh_agent']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@35.179.152.149 -C \"kubectl apply -f deploy_service.yaml\""
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${K8S_MASTER} -C \"kubectl apply -f deploy_service.yaml\""
                 }
             }
         }

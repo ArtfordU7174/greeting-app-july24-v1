@@ -13,7 +13,7 @@
 
     <groupId>com.vmtech</groupId>
     <artifactId>vmtech</artifactId>
-    <version>1.0</version>
+    <version>1.0-RELEASE</version>
     <packaging>war</packaging>
     <name>vmtechapp</name>
     <description>Class DevOps project at mobannapp</description>
@@ -116,12 +116,11 @@
     </dependencies>
 
     <distributionManagement>
-        <repository>
-            <id>artifactory-central</id>
-            <name>vmtechgreetingapp-libs-release-local</name>
-            <url>http://52.21.102.210:8082/artifactory/vmtechgreetingapp-libs-release-local</url>
-        </repository>
+      <repository>
+        <id>central</id>
+        <name>dannart-libs-release-local</name>
+        <url>http://52.21.102.210:8081/artifactory/dannart-libs-release-local</url>
+      </repository>
     </distributionManagement>
 
 </project>
-
