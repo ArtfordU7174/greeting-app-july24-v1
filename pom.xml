@@ -119,7 +119,7 @@
       <repository>
         <id>central</id>
         <name>dannart-libs-release-local</name>
-        <url>http://52.21.102.210:8081/artifactory/dannart-libs-release-local</url>
+        <url>http://52.21.102.210:8082/artifactory/dannart-libs-release-local</url>
       </repository>
     </distributionManagement>
 
