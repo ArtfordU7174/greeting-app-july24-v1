@@ -85,7 +85,8 @@ pipeline {
        stage ('Publish build info') {
             steps {
                 rtPublishBuildInfo (
-                    serverId: "jfrog"
+                    serverId: "jfrog" 
+                    credentialsId: JFROG_SERVER
                  )
              }
          }
