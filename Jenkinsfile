@@ -70,18 +70,26 @@ pipeline {
         }
 
         // Deploy artifacts to Artifactory
-        stage ('Deploy Artifacts') {
-            steps {
-                rtMavenRun(
-                    tool: "Maven",
-                    pom: 'webapp/pom.xml',
-                    goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER",
-                    resolverId: "MAVEN_RESOLVER"
-                )
-            }
-        }
+       // stage ('Deploy Artifacts') {
+        //    steps {
+         //       rtMavenRun(
+         //           tool: "Maven",
+         //           pom: 'webapp/pom.xml',
+         //           goals: 'clean install',
+         //           deployerId: "MAVEN_DEPLOYER",
+         //           resolverId: "MAVEN_RESOLVER"
+         //       )
+         //   }
+        //}
 
+       stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "jfrog"
+                 )
+             }
+         }
+        
         // Copy Dockerfile and playbook to the staging server and build container image
         stage('Copy Files & Build Image in Parallel') {
             parallel {
