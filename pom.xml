@@ -120,7 +120,12 @@
         <id>central</id>
         <name>dannart-libs-release-local</name>
         <url>http://52.21.102.210:8082/artifactory/dannart-libs-release-local</url>
-      </repository>
+     </repository>
+     <repository>
+        <id>central</id>
+        <name>dannart-libs-snapshot-local</name>
+        <url>http://52.21.102.210:8082/artifactory/dannart-libs-snapshot-local</url>
+     </repository>
     </distributionManagement>
 
 </project>
