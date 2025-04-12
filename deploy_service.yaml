@@ -15,8 +15,8 @@ spec:
         app: artfordapp
     spec:
       containers:
-      - name: artf-con
-        image: artford7174/vmtechnologies-devops-1:{{buikd_number}}
+      - name: artford-con
+        image: artford7174/vmtechnologies-devops-1:{{build_number}}
         ports:
         - containerPort: 8080
 
