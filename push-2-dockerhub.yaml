@@ -59,4 +59,4 @@
         name: artford7174/vmtechnologies-devops-1
         tag: "{{ build_number }}"
         push: yes
-
+        source: local
