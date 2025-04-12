@@ -1,59 +1,62 @@
-
-#Create Custom Container Image, and Push it to DockerHub Registry
+# Create Custom Container Image and Push to DockerHub Registry
 ---
 - hosts: localhost
-  tasks: 
-  - name: Pull .war artifact from Artifactory
-    become: true
-    get_url:
-      url: http://52.21.102.210:8082/artifactory/dannart-libs-release-local/com/vmtech/vmtech/1.0-RELEASE/vmtech-1.0-RELEASE.war
-      dest: /home/ubuntu
-      url_username: admin
-      url_password: Vmtech7174
+  become: yes
+  tasks:
 
-  - name: Rename .war Artifact
-    command: mv -f vmtech-1.0-RELEASE.war webapp.war
-  
-  - name: make sure python docker library is there for the docker_image module execution
-    ansible.builtin.pip:
-      name: docker
-      
-  - name: install docker engine
-    apt:
-      pkg:
-      - docker
-      - docker.io
-    become: yes
+    - name: Install required system packages
+      apt:
+        name:
+          - python3-pip
+          - docker.io
+        state: present
+        update_cache: yes
 
-  - name: Pull Tomcat Container Image
-    docker_image:
-      name: !unsafe tomcat:latest
-      source: pull
-      force_tag: yes
+    - name: Install Docker SDK for Python using --break-system-packages
+      command: >
+        python3 -m pip install docker --break-system-packages
+      register: pip_install_result
+      changed_when: "'Successfully installed' in pip_install_result.stdout or 'Requirement already satisfied' in pip_install_result.stdout"
+      failed_when: pip_install_result.rc != 0
 
-  - name: Build image and with build args
-    docker_image:
-      name: artford7174/vmtechnologies-devops-1
-      repository: artford7174/vmtechnologies-devops-1:{{build_number}}
-      build:
-        path: /home/ubuntu
-        args:
-          listen_port: 8080
-      source: build
-      force_source: yes
-  
-  
-  - name: Log into DockerHub
-    docker_login:
-     username: artford7174
-     password: Dave7174&
- 
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
 
-  - name: Push to docker hub
-    docker_image:
-        name: artford7174/vmtechnologies-devops-1
-        repository: artford7174/vmtechnologies-devops-1:{{build_number}}
+    - name: Pull .war artifact from Artifactory
+      get_url:
+        url: http://52.21.102.210:8082/artifactory/dannart-libs-release-local/com/vmtech/vmtech/1.0-RELEASE/vmtech-1.0-RELEASE.war
+        dest: /home/ubuntu/webapp.war
+        url_username: admin
+        url_password: Vmtech7174
+
+    - name: Pull Tomcat Container Image
+      community.docker.docker_image:
+        name: tomcat:latest
+        source: pull
         force_tag: yes
+
+    - name: Build Docker image with build args
+      community.docker.docker_image:
+        name: artford7174/vmtechnologies-devops-1
+        tag: "{{ build_number }}"
+        build:
+          path: /home/ubuntu
+          args:
+            listen_port: 8080
+        source: build
+        force_source: yes
+
+    - name: Log in to DockerHub
+      community.docker.docker_login:
+        username: artford7174
+        password: "Dave7174&"
+
+    - name: Push image to DockerHub
+      community.docker.docker_image:
+        name: artford7174/vmtechnologies-devops-1
+        tag: "{{ build_number }}"
         push: yes
-        source: local
 
