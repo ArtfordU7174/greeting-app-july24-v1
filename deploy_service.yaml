@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: artford-con
-        image: artford7174/vmtechnologies-devops-1:44
+        image: artford7174/vmtechnologies-devops-1:05032025-1238
         ports:
         - containerPort: 8080
 
